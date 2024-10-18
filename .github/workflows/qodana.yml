@@ -1,0 +1,29 @@
+name: Qodana Static Analysis
+
+on:
+  push:
+    branches:
+      - main  # Change this if you're using a different branch
+  pull_request:
+    branches:
+      - main  # Change this if you're using a different branch
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Qodana static analysis
+        uses: JetBrains/qodana-action@v2023.2
+        with:
+          project-dir: '.'  # Path to your iOS project
+          cache-dir: '.qodana/cache'  # Optional: caching directory for Qodana
+
+      - name: Upload Qodana results
+        uses: actions/upload-artifact@v2
+        with:
+          name: qodana-report
+          path: .qodana/results
